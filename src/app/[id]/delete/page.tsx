@@ -32,8 +32,13 @@ const Delete = () => {
     try {
       await supabase.from("tasks").delete().eq("id", id);
       router.push("/");
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Type check before accessing message
+        console.log(error.message);
+      } else {
+        console.log("An unexpected error occurred");
+      }
     }
   };
 

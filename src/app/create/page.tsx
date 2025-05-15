@@ -12,7 +12,7 @@ export default function Create() {
     description: "",
   });
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTask({ ...task, [e.target.name]: e.target.value });
   };
 
@@ -20,8 +20,13 @@ export default function Create() {
     try {
       await supabase.from("tasks").upsert([task]);
       router.push("/");
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Type check before accessing message
+        console.log(error.message);
+      } else {
+        console.log("An unexpected error occurred");
+      }
     }
   };
 

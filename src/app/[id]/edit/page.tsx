@@ -14,7 +14,7 @@ const Edit = () => {
     description: "",
   });
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTask({ ...task, [e.target.name]: e.target.value });
   };
 
@@ -35,8 +35,13 @@ const Edit = () => {
     try {
       await supabase.from("tasks").update(task).eq("id", id);
       router.push("/");
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Type check before accessing message
+        console.log(error.message);
+      } else {
+        console.log("An unexpected error occurred");
+      }
     }
   };
 

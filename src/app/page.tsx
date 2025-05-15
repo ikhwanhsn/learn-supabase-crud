@@ -5,8 +5,14 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+type Task = {
+  id: number;
+  name: string;
+  description: string;
+};
+
 export default function Home() {
-  const [tasks, setTasks] = useState<any>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const getTasks = async () => {
     const { data, error } = await supabase.from("tasks").select("*");
@@ -34,7 +40,7 @@ export default function Home() {
           </Link>
         </div>
         <ul>
-          {tasks.map((task: any) => (
+          {tasks.map((task: Task) => (
             <li key={task.id} className="py-2 flex justify-between w-full">
               <span>
                 <strong>{task.name}</strong> - {task.description}
